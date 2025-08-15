@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.lt.ecommerceappmvvm.ui.theme.Blue200
 
 @Composable
@@ -22,6 +23,7 @@ fun DefaulTextField(
     label:String,
     icon:ImageVector,
     keyboardType: KeyboardType = KeyboardType.Text,
+    hideText:Boolean = false
 ){
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -39,7 +41,11 @@ fun DefaulTextField(
                 )
 
         },
+
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = if (hideText) PasswordVisualTransformation() else
+            androidx.compose.ui.text.input.VisualTransformation.None,
+
 //         colors = TextFieldDefaults.colors(
 //             focusedContainerColor = Color.Transparent,
 //             unfocusedContainerColor = Color.Transparent,

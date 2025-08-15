@@ -1,5 +1,6 @@
 package com.lt.ecommerceappmvvm.presentation.screens.auth.register.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,10 +22,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,9 +36,19 @@ import androidx.compose.ui.unit.sp
 import com.lt.ecommerceappmvvm.R
 import com.lt.ecommerceappmvvm.presentation.components.DefaulButton
 import com.lt.ecommerceappmvvm.presentation.components.DefaulTextField
+import com.lt.ecommerceappmvvm.presentation.screens.auth.register.RegisterViewModel
 
 @Composable
-fun RegisterContent(paddingValues:PaddingValues) {
+fun RegisterContent(paddingValues:PaddingValues, vm:RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+
+    val state = vm.state
+    val context= LocalContext.current
+    LaunchedEffect( key1= vm.errorMessage){
+        if (vm.errorMessage != ""){
+            Toast.makeText(context,vm.errorMessage, Toast.LENGTH_LONG).show()
+        }
+    }
+
 Box(modifier =Modifier
     .padding(paddingValues =paddingValues)
     .fillMaxSize()
@@ -53,8 +66,6 @@ contentScale = ContentScale.Crop,
 }
        )
        */
-
-
 
 )
 
@@ -115,30 +126,30 @@ contentScale = ContentScale.Crop,
 
                 DefaulTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = state.name,
+                    onValueChange = {text ->vm.onNameInput(text)},
                     label = "Nombre",
                     icon = Icons.Default.Person,
                 )
                 DefaulTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = state.lastName,
+                    onValueChange = {text->vm.onLastNameInput(text)},
                     label = "Apellidos",
                     icon = Icons.Outlined.Person,
                 )
                 DefaulTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = state.email,
+                    onValueChange = {text->vm.onEmailInput(text)},
                     label = "Correo",
                     icon = Icons.Default.MailOutline,
                     keyboardType = KeyboardType.Email
                 )
                 DefaulTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = state.phone,
+                    onValueChange = {text->vm.onPhoneInput(text)},
                     label = "Telefono",
                     icon = Icons.Default.Call,
                     keyboardType = KeyboardType.Number
@@ -146,20 +157,22 @@ contentScale = ContentScale.Crop,
                 )
                 DefaulTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = state.password,
+                    onValueChange = {text->vm.onPasswordInput(text)},
                     label = "Contraseña",
                     icon = Icons.Default.Lock,
-                    keyboardType = KeyboardType.Password
+                    keyboardType = KeyboardType.Password,
+                    hideText = true
 
                 )
                 DefaulTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = state.confirmPassword,
+                    onValueChange = {text->vm.onConfirmPasswordInput(text)},
                     label = "Confirmar Contraseña",
                     icon = Icons.Default.Lock,
-                    keyboardType = KeyboardType.Password
+                    keyboardType = KeyboardType.Password,
+                            hideText = true
 
                 )
 
@@ -169,7 +182,7 @@ contentScale = ContentScale.Crop,
                         // .padding(top = 20.dp, bottom = 10.dp),
                         .height(50.dp),
                     text = "confirm",
-                    onClick = {}
+                    onClick = {vm.validateForm()}
                 )
 
             }

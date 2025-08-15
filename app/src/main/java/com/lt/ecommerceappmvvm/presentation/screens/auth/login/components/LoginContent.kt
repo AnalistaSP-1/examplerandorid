@@ -1,5 +1,6 @@
 package com.lt.ecommerceappmvvm.presentation.screens.auth.login.components
 import android.R.attr.text
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.Image
@@ -14,7 +15,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -22,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,7 +51,16 @@ import com.lt.ecommerceappmvvm.presentation.screens.auth.login.LoginViewModel
 fun LoginContent(navController: NavController,paddingValues: androidx.compose.foundation.layout.PaddingValues,
                  vm: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+     val state = vm.state
+    val context = LocalContext.current
     //IMAGEN
+
+    LaunchedEffect( key1= vm.errorMessage){
+        if (vm.errorMessage != ""){
+            Toast.makeText(context,vm.errorMessage, Toast.LENGTH_LONG).show()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -96,7 +110,9 @@ fun LoginContent(navController: NavController,paddingValues: androidx.compose.fo
             {
                 //columna con cajas de textos
                 Column(
-                    modifier = Modifier.padding(top = 30.dp, end = 15.dp, start = 15.dp),
+                    modifier = Modifier
+                        .padding(top = 30.dp, end = 15.dp, start = 15.dp)
+                        .verticalScroll(rememberScrollState ())
                 ) {
                     Text(modifier = Modifier.padding(bottom = 20.dp),
                         text = "INGRESA",
@@ -129,9 +145,9 @@ fun LoginContent(navController: NavController,paddingValues: androidx.compose.fo
                      )*/
                     DefaulTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value =vm.email,
+                        value =state.email,
                         onValueChange ={text->
-                            vm.email  =  text
+              vm.onEmailInput(text)
                         } ,
                         label = "Corre Electronico",
                         icon = Icons.Default.Email,
@@ -140,14 +156,14 @@ fun LoginContent(navController: NavController,paddingValues: androidx.compose.fo
 
                     DefaulTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value =vm.password,
+                        value =state.password,
                         onValueChange ={    text->
-                            vm.password  =  text
-
+vm.onPasswordInput(text)
                         } ,
                         label = "Contraseña",
                         icon = Icons.Default.Lock,
-                        keyboardType = KeyboardType.Password
+                        keyboardType = KeyboardType.Password,
+                        hideText =  true
                     )
 
 //espacio entre cajas de texto
@@ -185,7 +201,7 @@ fun LoginContent(navController: NavController,paddingValues: androidx.compose.fo
                             // .padding(top = 20.dp, bottom = 10.dp),
                             .height(50.dp),
                         text = "LOGIN",
-                        onClick = {}
+                        onClick = {vm.validateForm()}
                     )
 //espacio entre cajas de texto
 
