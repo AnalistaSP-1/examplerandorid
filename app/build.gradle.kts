@@ -1,10 +1,8 @@
 // app/build.gradle.kts (Nivel de Módulo App)
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
@@ -19,6 +17,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,16 +30,20 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         // La versión del compilador de Compose suele estar ligada a la versión de Kotlin.
         // Revisa la tabla de compatibilidad de Compose y Kotlin.
@@ -51,6 +54,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.support.annotations)
+
     // Versión de Hilt (debe coincidir con la del plugin en el archivo de proyecto)
     val hiltVersion = "2.49"
 
@@ -66,7 +71,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3") // Material 3
-    implementation("androidx.compose.material:material")   // Material 2 (si aún la necesitas o alguna lib la trae)
+    implementation("androidx.compose.material:material") // Material 2 (si aún la necesitas o alguna lib la trae)
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.7") // Última estable
@@ -84,7 +89,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
+
+
+    // DAGGER HILT
+    implementation(libs.hilt.android)
+    implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    ksp(libs.hilt.compiler)
 
 }
