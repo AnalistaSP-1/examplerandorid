@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
-
+//exampler jaaaa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        // enableEdgeToEdge()
