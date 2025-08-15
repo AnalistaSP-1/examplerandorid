@@ -40,13 +40,12 @@ import com.lt.ecommerceappmvvm.R
 import com.lt.ecommerceappmvvm.presentation.components.DefaulButton
 import com.lt.ecommerceappmvvm.presentation.components.DefaulTextField
 import com.lt.ecommerceappmvvm.presentation.navigation.screen.AuthScreen
+import com.lt.ecommerceappmvvm.presentation.screens.auth.login.LoginViewModel
 
 @Composable
-fun LoginContent(navController: NavController,paddingValues: androidx.compose.foundation.layout.PaddingValues
+fun LoginContent(navController: NavController,paddingValues: androidx.compose.foundation.layout.PaddingValues,
+                 vm: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-   var email by remember {mutableStateOf("")}
-    var password by remember {mutableStateOf("")}
-
     //IMAGEN
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -130,9 +129,9 @@ fun LoginContent(navController: NavController,paddingValues: androidx.compose.fo
                      )*/
                     DefaulTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value =email,
+                        value =vm.email,
                         onValueChange ={text->
-                            email  =  text
+                            vm.email  =  text
                         } ,
                         label = "Corre Electronico",
                         icon = Icons.Default.Email,
@@ -141,9 +140,9 @@ fun LoginContent(navController: NavController,paddingValues: androidx.compose.fo
 
                     DefaulTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value =password,
+                        value =vm.password,
                         onValueChange ={    text->
-                            password  =  text
+                            vm.password  =  text
 
                         } ,
                         label = "Contraseña",

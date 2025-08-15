@@ -18,6 +18,9 @@ import androidx.compose.material3.Surface
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.lt.ecommerceappmvvm.presentation.navigation.graph.RootNavGraph
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
 
